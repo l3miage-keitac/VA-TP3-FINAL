@@ -124,6 +124,37 @@ public class CandidatRepositoryTest {
 
         //then
         assertThat(candidateEntitiesResponses).hasSize(1);
+    }
 
+    @Test
+    void testFindAllByHasExtraTimeFalseAndBirthDateBefore() {
+        CandidateEntity cand1 = CandidateEntity
+                .builder()
+                .email("cand1@gmail.com")
+                .firstname("John")
+                .lastname("Doe")
+                .hasExtraTime(true)
+                .birthDate(LocalDate.parse("2007-01-08"))
+                .phoneNumber("07456798")
+                .build();
+
+        CandidateEntity cand2 = CandidateEntity
+                .builder()
+                .email("cand2@gmail.com")
+                .firstname("Calvin")
+                .lastname("Klein")
+                .hasExtraTime(false)
+                .birthDate(LocalDate.parse("2005-05-08"))
+                .phoneNumber("06435676")
+                .build();
+
+        candidateRepository.save(cand1);
+        candidateRepository.save(cand2);
+
+        //when
+        Set<CandidateEntity> candidateEntitiesResponses = candidateRepository.findAllByHasExtraTimeFalseAndBirthDateBefore(LocalDate.parse("2006-01-01"));
+
+        //then
+        assertThat(candidateEntitiesResponses).hasSize(1);
     }
 }
