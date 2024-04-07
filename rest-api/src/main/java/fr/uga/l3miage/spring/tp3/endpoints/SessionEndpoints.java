@@ -1,5 +1,6 @@
 package fr.uga.l3miage.spring.tp3.endpoints;
 
+import fr.uga.l3miage.spring.tp3.errors.UpdateSessionStatusErrorResponse;
 import fr.uga.l3miage.spring.tp3.request.SessionCreationRequest;
 import fr.uga.l3miage.spring.tp3.responses.SessionResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +24,11 @@ public interface SessionEndpoints {
     @PostMapping("/create")
     SessionResponse createSession(@RequestBody SessionCreationRequest request);
 
-
+    @Operation(description = "Modifier le status une session")
+    @ApiResponse(responseCode = "200",description = "Le status a bien été modifié")
+    @ApiResponse(responseCode = "409" ,description = "Le status n'a pas pu être modifier", content = @Content(schema = @Schema(implementation = UpdateSessionStatusErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{idSession}")
+    SessionResponse updateSessionStatus(@PathVariable(name = "idSession") Long idSession);
 
 }
